@@ -1,0 +1,15 @@
+{
+	"name": "com.isostopy.translation",
+	"displayName": "Translation System",
+	"version":"1.0.0",
+	"description": "Paquete con el que hacemos traducciones.",
+	"author": "isostopy",
+	"samples":
+	[
+		{
+			"displayName":"Translation Sample",
+			"description":"Muestra de como usar el paquete de traducciones.",
+			"path":"Sample"
+		}
+	]
+}
