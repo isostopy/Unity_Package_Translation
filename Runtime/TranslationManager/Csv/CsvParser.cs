@@ -8,7 +8,7 @@ namespace Isostopy.Translation
 		// ---------------------------------------------------------------------
 
 		/// <summary>
-		/// Devuelve el texto de un csv como una lista de strings de dos dimensiones. </summary>
+		/// Devuelve el texto de un csv como una lista de strings de dos dimensiones con el formato [fila][columna]. </summary>
 		public static List<List<string>> ParseList(string csvContent)
 		{
 			List<List<string>> csvTable = new List<List<string>>();             /// Lista 2D para guardar el contenido del csv.
@@ -19,7 +19,7 @@ namespace Isostopy.Translation
 			int i = 0;
 
 			// Mirar char a char el contenido del csv.
-			csvContent = csvContent.Trim();
+			csvContent = csvContent.Trim().Replace("\r", "");
 			while (i < csvContent.Length)
 			{
 				cell = "";
@@ -47,7 +47,7 @@ namespace Isostopy.Translation
 		}
 
 		/// <summary>
-		/// Devuelve el texto de un csv como una array de strings de dos dimensiones. </summary>
+		/// Devuelve el texto de un csv como una array de strings de dos dimensiones con el formato [fila][columna]. </summary>
 		public static string[][] ParseArray(string csvContent)
 		{
 			List<string>[] listArray = ParseList(csvContent).ToArray();

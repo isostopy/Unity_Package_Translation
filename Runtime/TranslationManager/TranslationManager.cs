@@ -1,31 +1,20 @@
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-
-/* README */
-// En nombre del idioma en la primera fila tiene que ser el mismo en todos los archivos, pero puede estar en columnas diferentes.
-// Los idiomas y los id son case-insentive. Da igual como los escribas. ESPAÑOL y español son lo mismo.
-// Ojo, si son sensibles a tildes y otros signos. Ingles e Inglés son idiomas distintos, mejor todos los nombres de idiomas e ids sin tildes.
-// No se pueden repetir ids, ni si quiera entre distintos archivos csv.
 
 namespace Isostopy.Translation
 {
 	/// <summary>
-	/// Clase persistente que tiene almacenado un diccionario con todas las frases en todos los idiomas, extraidas de los archivos csv de traducciones. </summary>
-	[AddComponentMenu("Isostopy/Translation/Translation Manager")]
-	public class TranslationManager : MonoBehaviour
+	/// Clase persistente que tiene un diccionario almacenando todas los textos en todos los idiomas. </summary>
+	public abstract class TranslationManager : MonoBehaviour
 	{
-		static TranslationManager instance = null;
-
-		/// <summary> Array con todos los archivos csv de los que se extraen las traducciones. </summary>
-		[Space][SerializeField] TextAsset[] csvFiles = null;
+		public static TranslationManager instance;
 
 		/// <summary> Diccionario de traducciones. </summary>
-		/// Cada key del diccionario es un idioma, cuyo value es su propio diccionario con el key = id, y el value = la traduccion correspondiente a ese idioma.
-		Dictionary<string, Dictionary<string, string>> translations = new Dictionary<string, Dictionary<string, string>>();
+		protected TranslationDictionary translations = new TranslationDictionary();
 
 		/// <summary> Idioma guardado como el idioma actual. </summary>
-		private static string _currentLanguage = null;
+		private static string _currentLanguage = "";
 		/// <summary> Evento disparado cuando se cambia de idioma. </summary>
 		private static UnityAction<string> onLanguageChange;
 
@@ -33,10 +22,14 @@ namespace Isostopy.Translation
 		// ---------------------------------------------------------------------
 		#region Initialization
 
-		private void Awake()
+		protected virtual void Awake()
 		{
 			PersistentSetup();
-			FillDictionaries();
+			translations = GenerateTranslationDictionary();
+
+			// El primer idioma del diccionario es el idioma por defecto.
+			var firstLanguage = translations.Keys.ElementAt(0);
+			CurrentLanguage = firstLanguage;
 		}
 
 		/// <summary> Asegurarse de que solo hay una instancia de este componente.
@@ -49,74 +42,18 @@ namespace Isostopy.Translation
 				DontDestroyOnLoad(this);
 			}
 			else
+			{
+				Debug.LogWarning("Hay multiples instancias del Translation Manager.", gameObject);
 				Destroy(this);
-		}
-
-		// ------------------------------------------
-
-		/// <summary>
-		/// Llena el diccionario de traducciones con el contenido de los csv. </summary>
-		private void FillDictionaries()
-		{
-			translations.Clear();
-			foreach (TextAsset file in csvFiles)
-			{
-				// Extraer el conenido del csv en una tabla 2D.
-				List<List<string>> csvTable = CsvParser.ParseList(file.text);
-
-				// La primera linea son los nombres de los idiomas.
-				List<string> languages = csvTable[0];
-				AddLanguages(languages);
-				// Cada una de las demas lineas es una traduccion.
-				for (int y = 1; y < csvTable.Count; y++)
-				{
-					List<string> line = csvTable[y];
-					AddTranslations(line, languages);
-				}
 			}
 		}
 
-		/// <summary>
-		/// Añade al diccionario de traducciones una entrada vacia por cada idioma que no aparece ya. </summary>
-		private void AddLanguages(List<string> languages)
-		{
-			// El idioma por defecto es el primer idioma del primer csv.
-			if (_currentLanguage == null && languages.Count > 1)
-				_currentLanguage = languages[1].ToLower().Trim();
-
-			for (int x = 1; x < languages.Count; x++)
-			{
-				languages[x] = languages[x].ToLower().Trim();
-				if (!translations.ContainsKey(languages[x]))
-					translations.Add(languages[x], new Dictionary<string, string>());
-			}
-		}
+		// ----------------------------------
 
 		/// <summary>
-		/// Añade una nueva traduccion al diccionario de traducciones. </summary>
-		/// line[0] es el id de la traduccion. line[1] es el texto en el idioma languages[1]. line[2], en lenguages [2]. Etc.
-		private void AddTranslations(List<string> line, List<string> languages)
-		{
-			string id = line[0].ToLower().Trim();
-			 
-			int x = 1;
-			while (x < line.Count && x < languages.Count)
-			{
-				string language = languages[x];
-				string cell = line[x];
-
-				// Si en las traducciones ya aparece esa id, avisar de que hay un duplicado.
-				if (translations[language].ContainsKey(id))
-				{
-					if (id != "") Debug.LogWarning("Los CSV contienen duplicados del id [" + id + "]");
-					break;
-				}
-
-				// Añadir al diccionario.
-				translations[language].Add(id, cell);
-				x++;
-			}
-		}
+		/// Genera el diccionario de traducciones. <br/>
+		/// Cada key del diccionario es un idioma, cuyo value es otro diccionario con el key = id, y el value = el texto correspondiente a ese idioma. </summary>
+		public abstract TranslationDictionary GenerateTranslationDictionary();
 
 		#endregion
 
@@ -151,9 +88,9 @@ namespace Isostopy.Translation
 		{
 			get
 			{
-				if (instance != null)
-					return _currentLanguage;
-				return "";
+				if (instance == null)
+					return "";
+				return _currentLanguage;
 			}
 
 			set
@@ -179,10 +116,10 @@ namespace Isostopy.Translation
 		}
 
 		/// <summary> Añade un listener para saber cuando se cambia de idioma. </summary>
-		public static void AddLanguageListener(UnityAction<string> listner) => onLanguageChange += listner;
+		public static void AddListenerToLanguageChange(UnityAction<string> listner) => onLanguageChange += listner;
 
 		/// <summary> Elimina un listener del evento que notifica cuando se cambia de idioma. </summary>
-		public static void RemoveLanguageListener(UnityAction<string> listner) => onLanguageChange -= listner;
+		public static void RemoveListenerFromLanguageChange(UnityAction<string> listner) => onLanguageChange -= listner;
 
 		#endregion
 	}

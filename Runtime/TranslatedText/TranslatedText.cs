@@ -38,13 +38,13 @@ namespace Isostopy.Translation
 		{
 			// Actualizar el texto y añadir listener al cambio de idioma.
 			SetText(TranslationManager.GetTranslation(id));
-			TranslationManager.AddLanguageListener(UpdateText);
+			TranslationManager.AddListenerToLanguageChange(UpdateText);
 		}
 
 		protected virtual void OnDestroy()
 		{
 			// Al destruir el game object elimina el listener.
-			TranslationManager.RemoveLanguageListener(UpdateText);
+			TranslationManager.RemoveListenerFromLanguageChange(UpdateText);
 		}
 
 		/// <summary> Listener del evento que lanza el manager cuando se cambia el idioma. </summary>
