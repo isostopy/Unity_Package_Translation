@@ -1,7 +1,7 @@
 {
 	"name": "com.isostopy.translation",
 	"displayName": "Translation System",
-	"version":"1.0.1",
+	"version":"1.2.0",
 	"description": "Paquete con el que hacemos traducciones.",
 	"author": "isostopy",
 	"samples":

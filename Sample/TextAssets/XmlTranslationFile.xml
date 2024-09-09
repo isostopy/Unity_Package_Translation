@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translations>
+    <hello>
+        <es>¡Hola Mundo!</es>
+        <en>Hello World!</en>
+    </hello>
+    <text>
+        <es>Los ángulos de Euler constituyen un conjunto de tres coordenadas angulares que sirven para especificar la orientación de un sistema de referencia de ejes ortogonales, normalmente móvil, respecto a otro sistema de referencia de ejes ortogonales normalmente fijos.</es>
+        <en>Euler angles constitute a set of three angular coordinates that serve to specify the orientation of a reference system of orthogonal axes, normally mobile, with respect to another reference system of orthogonal axes, normally fixed.</en>
+    </text>
+</translations>
