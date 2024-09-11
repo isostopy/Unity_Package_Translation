@@ -8,8 +8,8 @@ namespace Isostopy.Translation.Editor
 	/// <summary> Ventana del editor que permite convertir un archivo de traducciones de un formato a otro. </summary>
 	public class TranslationFileConverter : EditorWindow
 	{
-		const string prefsKey_csvFilePath = "TranslationFileConverter.CsvPath";
-		const string prefsKey_xmlFilePath = "TranslationFileConverter.XmlPath";
+		const string prefsKey_originPath = "TranslationFileConverter.OriginPath";
+		const string prefsKey_targetPath = "TranslationFileConverter.TargetPath";
 
 
 		// --------------------------------------------------------------------------
@@ -48,12 +48,13 @@ namespace Isostopy.Translation.Editor
 		private void ConvertCsvFileToXmlFile()
 		{
 			// Abrir el selector de archivos por la ultima ruta guardada.
-			string csvPath = EditorPrefs.GetString(prefsKey_csvFilePath);
+			string csvPath = EditorPrefs.GetString(prefsKey_originPath);
+			csvPath = string.IsNullOrEmpty(csvPath) ? "Assets/" : csvPath;
 			csvPath = EditorUtility.OpenFilePanel("Selecciona un archivo CSV de traducciones", csvPath, "csv");
 			if (string.IsNullOrEmpty(csvPath))
 				return;
 			// Guardar la ruta seleccionada.
-			EditorPrefs.SetString(prefsKey_csvFilePath, csvPath);
+			EditorPrefs.SetString(prefsKey_originPath, csvPath);
 
 			// Sacar el contenido del archivo y meterlo en un xml.
 			string csvText = File.ReadAllText(csvPath);
@@ -61,12 +62,13 @@ namespace Isostopy.Translation.Editor
 
 			// Abrir la ventana para seleccionar donde guardar el archivo.
 			string csvFileName = Path.GetFileNameWithoutExtension(csvPath);
-			string xmlPath = EditorPrefs.GetString(prefsKey_xmlFilePath);
+			string xmlPath = EditorPrefs.GetString(prefsKey_targetPath);
+			xmlPath = string.IsNullOrEmpty(xmlPath) ? "Assets/" : xmlPath;
 			xmlPath = EditorUtility.SaveFilePanel("Selecciona donde guardar el nuevo achivo XML", xmlPath, csvFileName, "xml");
 			if (string.IsNullOrEmpty(xmlPath))
 				return;
 
-			EditorPrefs.SetString(prefsKey_xmlFilePath, xmlPath);
+			EditorPrefs.SetString(prefsKey_targetPath, xmlPath);
 
 			// Guardar el archivo.
 			xmlDoc.Save(xmlPath);
