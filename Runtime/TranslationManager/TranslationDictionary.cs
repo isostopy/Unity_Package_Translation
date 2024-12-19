@@ -20,7 +20,7 @@ namespace Isostopy.Translation
 		/// <summary> Añade una nueva traduccion al diccionario. </summary>
 		public void AddEntry(string language, string id, string translation)
 		{
-			// Asegurar que estan en minuscula.
+			// Asegurar que las id estan en minuscula.
 			id = id.ToLower();
 			language = language.ToLower();
 			// Añadir el idioma al diccionario.

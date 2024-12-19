@@ -18,8 +18,8 @@ namespace Isostopy.Translation
 {
 	/// <summary>
 	/// Translation manager que extrae las traducciones de un archivo XML. </summary>
-	[AddComponentMenu("Isostopy/Translation/XML Translation Manager")]
-	public class XmlTranslationManager : TranslationManager
+	[AddComponentMenu("Isostopy/Translation/XML Translation Reader")]
+	public class XmlTranslationReader : MonoBehaviour
 	{
 		/// Array con los archivos de los que se extraen las traducciones.
 		[Space][SerializeField] TextAsset[] xmlFiles = { };
@@ -27,27 +27,27 @@ namespace Isostopy.Translation
 
 		// ---------------------------------------------------------------------
 
-		public override TranslationDictionary GenerateTranslationDictionary()
+		private void Awake()		
 		{
-			TranslationDictionary dictionary = new();
-
 			foreach (var file in xmlFiles)
 			{
 				XmlDocument xmlDoc = new XmlDocument();
 				xmlDoc.LoadXml(file.text);
 
 				foreach (XmlNode node in xmlDoc.DocumentElement)
-					foreach(XmlNode childNode in node.ChildNodes)
+				{
+					foreach (XmlNode childNode in node.ChildNodes)
 					{
-						var id = node.Name;
-						var language = childNode.Name;
-						var translation = childNode.InnerText;
+						var id =			node.Name;
+						var language =		childNode.Name;
+						var translation =	childNode.InnerText;
 
-						dictionary.AddEntry(language, id, translation);
+						TranslationManager.AddEntry(language, id, translation);
 					}
+				}
 			}
-
-			return dictionary;
 		}
+
+		// ---------------------------------------------------------------------
 	}
 }
