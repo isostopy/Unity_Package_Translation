@@ -5,9 +5,10 @@ using UnityEngine.UI;
 namespace Isostopy.Translation
 {
 	/// <summary>
-	/// Componente que hace de intermediario entre los elementos de la escena y el TranslationManager para cambiar el idioma seleccionado. </summary>
-	/// Como componente persistente, el TranslationManager no existe en todas las escenas.
-	/// Este componente permite modificar el idioma del manager desde eventos en el inspector.
+	/// Componente que hace de intermediario entre la escena y el TranslationManager para cambiar el idioma seleccionado. </summary>
+	/// Como clase estatica, el TranslationManager no se puede referenciar desde el inspector.
+	/// Este componente permite modificar el idioma desde el inspector.
+
 	[AddComponentMenu("Isostopy/Translation/Language Selector")]
 	public class LanguageSelector : MonoBehaviour
     {

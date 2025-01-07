@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// >> Estrutura del csv: la primera columna son los ids, la primera fila son los nombres de los idioma.
+// >> Estructura de la tabla csv: la primera columna son los ids, la primera fila son los nombres de los idioma.
 /*		|     | language1 | language2 |
  *		| id1 | (...)     | (...)     |
  *		| id2 | (...)     | (...)     | */
@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Isostopy.Translation
 {
 	/// <summary>
-	/// Translation manager que extrae las traducciones de un archivo CSV. </summary>
+	/// Extrae las traducciones de archivos CSV. </summary>
 	[AddComponentMenu("Isostopy/Translation/CSV Translation Reader")]
 	public class CsvTranslationReader : MonoBehaviour
 	{

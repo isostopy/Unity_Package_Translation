@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+/* README */
+// >> Los idiomas y los id son case-insentive. Español, ESPAÑOL y español serán considerados el mismo idioma.
+//		Ojo, si son sensibles a tildes y otros signos. Ingles e Inglés son idiomas distintos. Mejor todos los idiomas e ids sin tildes.
+// >> No se pueden repetir ids.
+
 namespace Isostopy.Translation
 {
 	/// <summary>
-	/// Clase persistente que contiene todos los textos en todos los idiomas. </summary>
+	/// Clase estatica que contiene todos los textos en todos los idiomas. </summary>
 	public static class TranslationManager
 	{
 		/// <summary> Diccionario de traducciones. </summary>
-		private static TranslationDictionary translations = new TranslationDictionary();
+		private static TranslationDictionary translations = new();
 
 		/// <summary> Idioma guardado como el idioma actual. </summary>
 		private static string _currentLanguage = "";
@@ -21,6 +26,9 @@ namespace Isostopy.Translation
 		/// <summary> Añade una traduccion al diccionario. </summary>
 		public static void AddEntry(string language, string id, string translation)
 		{
+			language = language.ToLower();
+			id = id.ToLower();
+
 			translations.AddEntry(language, id, translation);
 
 			if (string.IsNullOrEmpty(CurrentLanguage))
@@ -35,7 +43,7 @@ namespace Isostopy.Translation
 		public static string GetTranslation(string id, string language = null)
 		{
 			if (language == null)
-				language = _currentLanguage;
+				language = CurrentLanguage;
 
 			id = id.ToLower();
 			language = language.ToLower();

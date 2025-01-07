@@ -17,7 +17,7 @@ using UnityEngine;
 namespace Isostopy.Translation
 {
 	/// <summary>
-	/// Translation manager que extrae las traducciones de un archivo XML. </summary>
+	/// Extrae las traducciones de archivos XML. </summary>
 	[AddComponentMenu("Isostopy/Translation/XML Translation Reader")]
 	public class XmlTranslationReader : MonoBehaviour
 	{
