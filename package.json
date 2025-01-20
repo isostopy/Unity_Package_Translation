@@ -9,7 +9,7 @@
 		{
 			"displayName":"Translation Sample",
 			"description":"Muestra de como usar el paquete de traducciones.",
-			"path":"Sample"
+			"path":"Samples/Usage"
 		}
 	]
 }
