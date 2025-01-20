@@ -7,7 +7,7 @@
 	"samples":
 	[
 		{
-			"displayName":"Translation Sample",
+			"displayName":"Basic Usage",
 			"description":"Muestra de como usar el paquete de traducciones.",
 			"path":"Samples/Usage"
 		}
