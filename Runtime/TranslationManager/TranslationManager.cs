@@ -35,6 +35,13 @@ namespace Isostopy.Translation
 				CurrentLanguage = language;
 		}
 
+		/// <summary> Vacia el diccionario de traducciones. </summary>
+		public static void ClearDictionary()
+		{
+			translations.Clear();
+			_currentLanguage = null;
+		}
+
 		// ---------
 
 		/// <summary>
