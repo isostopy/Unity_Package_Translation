@@ -32,7 +32,15 @@ namespace Isostopy.Translation
 			translations.AddEntry(language, id, translation);
 
 			if (string.IsNullOrEmpty(CurrentLanguage))
-				CurrentLanguage = language;
+				SetLanguage(language);
+		}
+
+		/// <summary> Elimina una traduccion del diccionario. </summary>
+		public static void RemoveTranslation(string id)
+		{
+			id = id.ToLower();
+
+			translations.RemoveEntry(id);
 		}
 
 		/// <summary> Vacia el diccionario de traducciones. </summary>
@@ -72,25 +80,28 @@ namespace Isostopy.Translation
 			{
 				return _currentLanguage;
 			}
+		}
 
-			set
+		/// <summary> Cambia el idioma seleccionado. </summary>
+		public static void SetLanguage(string language)
+		{
+			string value = language.ToLower();
+
+			if (value == _currentLanguage)
+				return;
+
+			if (translations.ContainsKey(value))
 			{
-				value = value.ToLower();
-
-				if (value == _currentLanguage)
-					return;
-
-				if (translations.ContainsKey(value))
-				{
-					_currentLanguage = value;
-					onLanguageChange?.Invoke(_currentLanguage);
-				}
-				else
-				{
-					Debug.LogError("El diccionario de traducciones no contiene el idioma [" + value + "]");
-				}
+				_currentLanguage = value;
+				onLanguageChange?.Invoke(_currentLanguage);
+			}
+			else
+			{
+				Debug.LogError("El diccionario de traducciones no contiene el idioma [" + value + "]");
 			}
 		}
+
+		// ---------
 
 		/// <summary> Añade un listener para saber cuando se cambia de idioma. </summary>
 		public static void AddListenerToLanguageChange(UnityAction<string> listner) => onLanguageChange += listner;

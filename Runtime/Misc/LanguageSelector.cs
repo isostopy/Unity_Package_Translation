@@ -25,17 +25,25 @@ namespace Isostopy.Translation
             {
                 languageButton.button.onClick.AddListener(() =>
                 {
-                    CurrentLanguage = languageButton.language;
+					SetLanguage(languageButton.language);
                 });
             }
 		}
+
+
+		// ---------------------------------------------------------------------
 
 		/// <summary> Idioma seleccionado en el Translation Manager. </summary>
 		public string CurrentLanguage
         {
             get { return TranslationManager.CurrentLanguage; }
-            set { TranslationManager.CurrentLanguage = value; }
         }
+
+		/// <summary> Cambia el idioma seleccionado en el Translation Manager. </summary>
+		public void SetLanguage(string language)
+		{
+			TranslationManager.SetLanguage(language);
+		}
 
 
 		// ---------------------------------------------------------------------

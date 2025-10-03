@@ -29,5 +29,20 @@ namespace Isostopy.Translation
 			// Añadir al diccionario la traduccion.
 			this[language].Add(id, translation);
 		}
+
+		/// <summary> Elimina la traduccion del diccionario con el id indicado. </summary>
+		public void RemoveEntry(string id)
+		{
+			foreach(var languageEntry in this)
+			{
+				// Borrar la entrada con ese id de cada lenguage.
+				if (languageEntry.Value.ContainsKey(id) == false)
+					continue;
+				languageEntry.Value.Remove(id);
+				// Si algun lenguaje se queda vacio, eliminar ese lenguaje.
+				if (languageEntry.Value.Count == 0)
+					this.Remove(languageEntry.Key);
+			}
+		}
 	}
 }
